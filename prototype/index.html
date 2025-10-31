@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Blue Gacha</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-boy-frame">
+        <div class="screen">
+            <!-- Header Bar with Title and Currency -->
+            <div class="header-bar">
+                <div class="professor-section">
+                    <img src="https://static.wikia.nocookie.net/herofanon/images/4/4b/ProfessorOakHero.png" 
+                        alt="Professor Oak" 
+                        class="professor-sprite"
+                        onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAI2SURBVFiF7ZdPiE1RHMc/575773vz3nvGmGlGxoTyZ6MsJAsZsmNnY2FhYaEslB0Le/+WU0rKgpKysmEnC4ToWcgCJZPCGGbMe+/de885FmYwhnnXfe/OnVl8u+d3zu/8Pt97zr2/c+E/axnQAVRIl3FgCNhQQn4FcAA4DIyk5QCQAYaB1ykMKeCjUqoAjAF54FsKDoBIKWWAceAr8B2YSNOZBXYCx4CXwGciY8yzvDAMHWNMSWv92RjzwXXdm865LcaYY8ADIB/HcTUMw1wQBGVgU+Q4zml8/5lt28eAJmAvcAcYDsPwYxAEJ4F7QC4IgqbjOM9s294D3AbuAtX5TLYB14FXwGvgGXAJ6AGmAQHUgPdKqRvAIyDrOM6O1KtWYB9wEhgEPgCvgQvATmBqXl8JGAEKlmV1GGO2AXXWgBqwH2gHHGCvtXYAKAI/5vW5wGagG+gCNgElxbJsMi6WoEJLOEat1ZKcKACWUiilcF0PrTVKqeXyQ4AEAdZagiBgcnKSWq2G53lLOVgOEBFEhDAMyfk+E5UKWmt838d13ZX5AMYYoiii2WzieR6WZWGMQSmFiKzkAIQQ0Ww2mZqawvd9oihCRLAsC9u2V3bQ9H8HIhhjEBGstTiOg+M4iAi2bePYy2+jBQERodFoUK1WCcMQrTW2bZPJZMhms2QyGRzHWdkBQKPRoFwuU6/XaTQa1Ot1RATXdclms+RyObLZLJ7nrR0gIhhjMMbMHY7WWlzXxfd9fN9fkP8TgL8jgJ/AFeBUv3/iFwAAAABJRU5ErkJggg==';">
+                    <div class="system-name">
+                        OAK'S<br>
+                        WONDER<br>
+                        CAPSULE
+                    </div>
+                    <div class="currency-display">
+                    <span class="currency-label">PoKé Coins</span>
+                    <span id="coinAmount" class="coin-amount">1000</span>
+                </div>
+                </div>
+                
+            </div>
+            <div class="container">
+                <div class="evolution-container">
+                    <div class="evolution-label">Evolution Energy</div>
+                    <div class="evolution-counter">(0/33 until Legendary)</div>
+                    <div class="evolution-bar-container">
+                        <div id="evolutionBar" class="evolution-bar"></div>
+                    </div>
+                </div>
+
+                <!-- Add drop rates display -->
+                <div class="drop-rates">
+                    <h3>Drop Rates</h3>
+                    <div class="rate-container">
+                        <span class="rarity-common">Common: 60%</span>
+                        <span class="rarity-uncommon">Uncommon: 25%</span>
+                        <span class="rarity-rare">Rare: 12%</span>
+                        <span class="rarity-legendary">Legendary: 3%</span>
+                    </div>
+                </div>
+                <div class="pokeball-container">
+                    <div class="pokeball"></div>
+                </div>
+                <div class="button-container">
+                    <button id="summonButton" class="gb-button" data-cost="100">Single Pull (100¢)</button>
+                    <button id="summonTenButton" class="gb-button" data-cost="800">9x Pull (800¢)</button>
+                    <button id="cheatButton" class="gb-button cheat-button">Add Coins</button>
+                </div>
+                <div id="result" class="result-container"></div>
+                <div id="multiResult" class="multi-result"></div>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="d-pad"></div>
+            <div class="buttons">
+                <div class="button-a">A</div>
+                <div class="button-b">B</div>
+            </div>
+            <div class="start-select">
+                <div class="button-start">START</div>
+                <div class="button-select">SELECT</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add the summon popup template -->
+    <div id="summonPopup" class="summon-popup">
+        <div class="popup-content">
+            <div class="pokeball-animate"></div>
+            <div class="summon-info"></div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { GachaSystem } from './src/components/gacha-system.js';
+
+        const gacha = new GachaSystem();
+        const summonButton = document.getElementById('summonButton');
+        const summonTenButton = document.getElementById('summonTenButton');
+        const resultDiv = document.getElementById('result');
+        const multiResultDiv = document.getElementById('multiResult');
+        const pityBar = document.getElementById('pityBar');
+        const coinDisplay = document.getElementById('coinAmount');
+        const cheatButton = document.getElementById('cheatButton');
+        const summonPopup = document.getElementById('summonPopup');
+        let activeTimeouts = [];
+        let skipAnimations = false;
+
+        function createSkipButton(onClick) {
+            const button = document.createElement('button');
+            button.className = 'skip-button';
+            button.textContent = 'SKIP ALL';
+            button.onclick = onClick;
+            return button;
+        }
+
+        function showSummonPopup(result, currentPull = 1, totalPulls = 1, results = null) {
+            const popupContent = summonPopup.querySelector('.popup-content');
+            summonPopup.dataset.rarity = result.pokemon.rarity.toLowerCase();
+            
+            popupContent.innerHTML = `
+                <div class="popup-counter">Pull ${currentPull} of ${totalPulls}</div>
+                <img src="${result.pokemon.sprite}" 
+                    alt="${result.pokemon.name}" 
+                    class="pokemon-sprite">
+                <h2>${result.pokemon.name}</h2>
+                ${totalPulls > 1 ? '<div class="skip-button-container"></div>' : ''}
+                <p>${result.pokemon.type}</p>
+                <p class="rarity-${result.pokemon.rarity.toLowerCase()}">${result.pokemon.rarity}</p>
+                ${result.isPity ? '<p class="pity-notice">⭐ Evolution Energy activated!</p>' : ''}
+            `;
+
+            // Add skip button if this is a multi-pull
+            if (totalPulls > 1 && results) {
+                const skipButtonContainer = popupContent.querySelector('.skip-button-container');
+                skipButtonContainer.appendChild(createSkipButton(() => {
+                    skipAnimations = true;
+                    summonPopup.style.display = 'none';
+                    
+                    // Clear all pending timeouts
+                    activeTimeouts.forEach(timeout => clearTimeout(timeout));
+                    activeTimeouts = [];
+                    
+                    // Show all results immediately
+                    displayFinalResults(results);
+                }));
+            }
+            
+            summonPopup.style.display = 'flex';
+            
+            // Add rarity-specific sound effects or additional VFX here
+            if (result.pokemon.rarity === 'Legendary') {
+                // Add screen flash effect
+                document.body.style.animation = 'screenFlash 1s';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 1000);
+            }
+
+            setTimeout(() => {
+                popupContent.classList.add('reveal');
+            }, 1000);
+
+            // Adjust display time based on rarity
+            const displayTime = result.pokemon.rarity === 'Legendary' ? 5000 :
+                            result.pokemon.rarity === 'Rare' ? 4000 : 3000;
+
+            setTimeout(() => {
+                summonPopup.style.display = 'none';
+                popupContent.classList.remove('reveal');
+            }, displayTime);
+        }
+
+        let coins = 1000;
+
+        // Update the bar update function
+        function updateEvolutionBar(counter) {
+            const percentage = (counter / 33) * 100;
+            document.getElementById('evolutionBar').style.width = `${percentage}%`;
+            document.querySelector('.evolution-counter').textContent = 
+                `(${counter}/33 until Legendary)`;
+        }
+
+        function updateCoins(amount) {
+            coins += amount;
+            coinDisplay.textContent = coins;
+            coinDisplay.classList.add('coin-add');
+            setTimeout(() => coinDisplay.classList.remove('coin-add'), 500);
+            
+            // Update button states
+            document.querySelectorAll('.gb-button').forEach(button => {
+                button.disabled = coins < parseInt(button.dataset.cost);
+            });
+        }
+
+        function displaySummonResult(result, container) {
+            showSummonPopup(result);
+            container.innerHTML = `
+                <h2>You summoned:</h2>
+                <div class="result-card">
+                    <img src="${result.pokemon.sprite}" 
+                        alt="${result.pokemon.name}" 
+                        class="pokemon-sprite">
+                    <div class="result-info">
+                        <p>Name: ${result.pokemon.name}</p>
+                        <p>Type: ${result.pokemon.type}</p>
+                        <p class="rarity-${result.pokemon.rarity.toLowerCase()}">${result.pokemon.rarity}</p>
+                        ${result.isPity ? '<p class="pity-notice">⭐ Pity system activated!</p>' : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Add cheat button handler
+        cheatButton.addEventListener('click', () => {
+            updateCoins(10000);
+        });
+        
+
+        summonButton.addEventListener('click', () => {
+            const cost = parseInt(summonButton.dataset.cost);
+            if (coins >= cost) {
+                updateCoins(-cost);
+                const result = gacha.summonPokemon();
+                multiResultDiv.innerHTML = '';
+                displaySummonResult(result, resultDiv);
+                updateEvolutionBar(result.pityCounter);
+                showSummonPopup(result, 1, 1);
+            }
+        });
+
+        // Update the summon handler
+        summonTenButton.addEventListener('click', () => {
+            const cost = parseInt(summonTenButton.dataset.cost);
+            if (coins >= cost) {
+                updateCoins(-cost);
+                resultDiv.innerHTML = '';
+                multiResultDiv.innerHTML = '<h2>9x Summon Results:</h2><div class="summon-grid">';
+                
+                let results = [];
+                let hasLegendary = false;
+                skipAnimations = false;
+
+                // Perform 9 pulls
+                for (let i = 0; i < 9; i++) {
+                    const result = gacha.summonPokemon();
+                    results.push(result);
+                    if (result.pokemon.rarity === 'Legendary') {
+                        hasLegendary = true;
+                    }
+                    
+                    if (!skipAnimations) {
+                        const timeout = setTimeout(() => {
+                            showSummonPopup(result, i + 1, 9, results);
+                        }, i * 3500);
+                        activeTimeouts.push(timeout);
+                    }
+                }
+
+                // Display final results after all animations
+                if (!skipAnimations) {
+                    const finalTimeout = setTimeout(() => {
+                        displayFinalResults(results);
+                        // Clear any remaining timeouts just in case
+                        activeTimeouts.forEach(timeout => clearTimeout(timeout));
+                        activeTimeouts = [];
+                    }, 9 * 3500);
+                    activeTimeouts.push(finalTimeout);
+                }
+            }
+        });
+
+        // Add this helper function
+        function displayFinalResults(results) {
+            let gridHTML = '';
+            results.forEach(result => {
+                gridHTML += `
+                    <div class="summon-card rarity-${result.pokemon.rarity.toLowerCase()}">
+                        <img src="${result.pokemon.sprite}" 
+                            alt="${result.pokemon.name}" 
+                            class="pokemon-sprite">
+                        <p class="card-name">${result.pokemon.name}</p>
+                        <p class="card-type">${result.pokemon.type}</p>
+                        <p class="card-rarity rarity-${result.pokemon.rarity.toLowerCase()}">${result.pokemon.rarity}</p>
+                        ${result.isPity ? '<p class="pity-notice">⭐</p>' : ''}
+                    </div>
+                `;
+            });
+            multiResultDiv.innerHTML = `<h2>9x Summon Results:</h2><div class="summon-grid">${gridHTML}</div>`;
+            updateEvolutionBar(results[results.length - 1].pityCounter);
+        }
+
+        // Initialize button states
+        updateCoins(0);
+    </script>
+</body>
+</html>

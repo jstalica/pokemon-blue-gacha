@@ -1,0 +1,17 @@
+{
+  "name": "pokemon-blue-gacha",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A gacha system prototype for Pokemon Blue",
+  "main": "prototype/index.html",
+  "scripts": {
+    "start": "start prototype/index.html",
+    "dev": "live-server prototype"
+  },
+  "dependencies": {
+    "live-server": "^1.2.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
