@@ -1,0 +1,596 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Game Boy Layout */
+.game-boy-frame {
+    background: #8b8b8b;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 
+        inset -4px -4px 0px 0px #373737,
+        inset 4px 4px 0px 0px #dedede,
+        0 0 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-width: 95vw;
+}
+
+.game-boy-frame::before {
+    content: "GAME BOY";
+    position: absolute;
+    bottom: -25px;
+    right: 30px;
+    font-size: 0.6em;
+    color: #555;
+    letter-spacing: 2px;
+}
+
+.screen {
+    background: #9bbc0f;
+    padding: 25px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    box-shadow: 
+        inset 0 0 10px rgba(0, 0, 0, 0.3),
+        0 0 5px rgba(0, 0, 0, 0.5);
+    position: relative;
+    border: 2px solid #306230;
+}
+
+/* Professor Oak Section */
+.professor-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #306230;
+    border-radius: 5px;
+    box-shadow: 
+        inset -2px -2px 0px 0px #0f380f,
+        inset 2px 2px 0px 0px #8bac0f;
+    margin-bottom: 20px;
+    width: auto;
+}
+
+.professor-sprite {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+}
+
+.system-name {
+    font-size: 0.7em;
+    color: #9bbc0f;
+    text-align: left;
+    line-height: 1.4;
+    text-shadow: 1px 1px #0f380f;
+}
+
+/* Update Grid Card Styles */
+.summon-card {
+    background: #0f380f;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 12px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    position: relative;
+    border: 2px solid #9bbc0f;
+}
+
+.summon-card .pokemon-sprite {
+    width: 64px;  /* Increased from 48px */
+    height: 64px;
+    margin: 5px auto;
+}
+
+.summon-card .card-name,
+.summon-card .card-type {
+    font-size: 0.6em;  /* Increased from 0.5em */
+    text-align: center;
+    width: 100%;
+    color: #9bbc0f;
+    text-shadow: 1px 1px #0f380f;
+}
+
+.container {
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Typography */
+h1 {
+    display: none;
+}
+
+/* Pity System */
+.pity-container {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 400px;
+}
+
+.pity-label, .pity-counter {
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 0.8em;
+    color: #0f380f;
+}
+
+.pity-counter {
+    text-align: right;
+}
+
+.pity-bar-container {
+    width: 100%;
+    height: 20px;
+    background-color: #306230;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #0f380f;
+}
+
+.pity-bar {
+    width: 0%;
+    height: 100%;
+    background-color: #8bac0f;
+    transition: width 0.3s ease;
+}
+
+/* Buttons */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.gb-button {
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8em;
+    background-color: #306230;
+    color: #9bbc0f;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 
+        inset -2px -2px 0px 0px #0f380f,
+        inset 2px 2px 0px 0px #8bac0f;
+    transition: all 0.1s ease;
+}
+
+.gb-button:hover {
+    transform: scale(1.05);
+}
+
+.gb-button:active {
+    transform: scale(0.95);
+}
+
+.gb-button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.cheat-button {
+    background-color: #8b0000 !important;
+    font-size: 0.7em;
+    padding: 5px 10px;
+}
+
+/* Rarity Styles */
+.rarity-common {
+    color: #0f380f !important;
+    text-shadow: 1px 1px #9bbc0f;
+}
+
+.rarity-uncommon {
+    color: #4a90e2 !important;
+    animation: uncommonGlow 2s ease-in-out;
+}
+
+.rarity-rare {
+    color: #9013fe !important;
+    animation: rareSparkle 2s ease-in-out;
+}
+
+.rarity-legendary {
+    color: #f5a623 !important;
+    animation: legendaryEffect 2s ease-in-out;
+    text-shadow: 0 0 10px #f5a623;
+}
+
+/* Pokemon Sprites */
+.pokemon-sprite {
+    image-rendering: pixelated;
+    width: 96px;
+    height: 96px;
+    margin: 10px auto;
+    display: block;
+    filter: contrast(0.7) brightness(1.2);
+}
+
+/* Summon Popup */
+.summon-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: #9bbc0f;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    border: 8px solid #306230;
+    max-width: 300px;
+    width: 90%;
+}
+
+.popup-counter {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #306230;
+    color: #9bbc0f;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.7em;
+    box-shadow: 
+        inset -2px -2px 0px 0px #0f380f,
+        inset 2px 2px 0px 0px #8bac0f;
+}
+
+/* Drop Rates Display */
+.drop-rates {
+    margin: 20px auto;
+    padding: 10px;
+    background: #306230;
+    border-radius: 5px;
+    box-shadow: 
+        inset -2px -2px 0px 0px #0f380f,
+        inset 2px 2px 0px 0px #8bac0f;
+}
+
+.drop-rates h3 {
+    color: #9bbc0f;
+    font-size: 0.8em;
+    margin-bottom: 10px;
+}
+
+.rate-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    font-size: 0.7em;
+}
+
+.rate-container span {
+    padding: 5px;
+    border-radius: 3px;
+    background: #0f380f;
+}
+
+/* Multi-Summon Grid */
+.summon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;  /* Fill available width */
+    margin: 20px auto;
+    padding: 10px;
+    background: #306230;
+    border-radius: 5px;
+    box-shadow: 
+        inset -2px -2px 0px 0px #0f380f,
+        inset 2px 2px 0px 0px #8bac0f;
+}
+
+.summon-card {
+    background: #0f380f;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 8px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    position: relative; /* For rarity indicator */
+    border: 1px solid #9bbc0f;
+}
+
+/* Rarity indicators for cards */
+.summon-card.rarity-common {
+    border-color: #b0cb33;
+}
+
+.summon-card.rarity-uncommon {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px #4a90e2;
+}
+
+.summon-card.rarity-rare {
+    border-color: #9013fe;
+    box-shadow: 0 0 5px #9013fe;
+}
+
+.summon-card.rarity-legendary {
+    border-color: #f5a623;
+    box-shadow: 0 0 10px #f5a623;
+    animation: legendaryBorder 2s infinite;
+}
+
+.summon-card .card-rarity {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 0.8em;
+    padding: 2px 4px;
+    border-radius: 2px;
+    background: #0f380f;
+}
+
+.summon-card .pokemon-sprite {
+    width: 64px;
+    height: 64px;
+    margin: 5px auto;
+}
+
+.summon-card .card-name,
+.summon-card .card-type {
+    font-size: 0.7em;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #4d5d08;
+}
+
+@keyframes legendaryBorder {
+    0% { box-shadow: 0 0 5px #f5a623; }
+    50% { box-shadow: 0 0 15px #f5a623; }
+    100% { box-shadow: 0 0 5px #f5a623; }
+}
+
+/* Animations */
+@keyframes uncommonGlow {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.1); filter: brightness(1.5); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes rareSparkle {
+    0% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.2) rotate(-5deg); }
+    75% { transform: scale(1.2) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes legendaryEffect {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.3); filter: brightness(1.8); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes screenFlash {
+    0% { background: #9bbc0f; }
+    25% { background: white; }
+    50% { background: #9bbc0f; }
+    75% { background: white; }
+    100% { background: #9bbc0f; }
+}
+
+/* Game Boy Controls */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.d-pad {
+    width: 80px;
+    height: 80px;
+    background: #373737;
+    position: relative;
+    border-radius: 50%;
+}
+
+.d-pad::before,
+.d-pad::after {
+    content: '';
+    position: absolute;
+    background: #373737;
+    border-radius: 5px;
+}
+
+.d-pad::before {
+    width: 80px;
+    height: 25px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.d-pad::after {
+    width: 25px;
+    height: 80px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.button-a,
+.button-b {
+    width: 40px;
+    height: 40px;
+    background: #373737;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b8b8b;
+    font-size: 0.8em;
+}
+
+.start-select {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+}
+
+.button-start,
+.button-select {
+    background: #373737;
+    padding: 5px 15px;
+    border-radius: 15px;
+    transform: rotate(-25deg);
+    color: #8b8b8b;
+    font-size: 0.6em;
+}
+
+/* Coin Display */
+.coin-display {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #306230;
+    padding: 8px 12px;
+    border-radius: 5px;
+    box-shadow: 
+        inset -2px -2px 0px 0px #0f380f,
+        inset 2px 2px 0px 0px #8bac0f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.coin-icon {
+    width: 16px;
+    height: 16px;
+    background: #f5a623;
+    border-radius: 50%;
+    border: 2px solid #9bbc0f;
+}
+
+.coin-amount {
+    color: #9bbc0f;
+    font-size: 0.8em;
+    text-shadow: 1px 1px #0f380f;
+}
+
+/* Title Section */
+.system-name {
+    font-size: 1em;
+    color: #9bbc0f;
+    text-align: center;
+    line-height: 1.4;
+    text-shadow: 2px 2px #0f380f;
+    padding: 10px 0;
+    width: 100%;
+}
+
+/* Evolution Energy (formerly Pity) System */
+.evolution-container {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 400px;
+}
+
+.evolution-label {
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 0.8em;
+    color: #0f380f;
+}
+
+.evolution-counter {
+    text-align: right;
+    color: #0f380f;
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
+
+.evolution-bar-container {
+    width: 100%;
+    height: 20px;
+    background-color: #306230;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #0f380f;
+}
+
+.evolution-bar {
+    width: 0%;
+    height: 100%;
+    background-color: #8bac0f;
+    transition: width 0.3s ease;
+}
+
+.skip-button-container {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.skip-button {
+    padding: 5px 10px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6em;
+    background-color: #8b0000;
+    color: #9bbc0f;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 
+        inset -2px -2px 0px 0px #590000,
+        inset 2px 2px 0px 0px #cc0000;
+}
+
+.skip-button:hover {
+    transform: scale(1.05);
+}
+
+.skip-button:active {
+    transform: scale(0.95);
+}
